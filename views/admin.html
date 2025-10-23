@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin File Manager</title>
+</head>
+<body>
+  <h2>Upload File</h2>
+  <form action="/upload?admin=true" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" />
+    <button type="submit">Upload</button>
+  </form>
+
+  <h2>Uploaded Files</h2>
+  <ul id="fileList"></ul>
+
+  <script>
+    async function loadFiles() {
+      const res = await fetch('/list-files?admin=true');
+      const files = await res.json();
+      const list = document.getElementById('fileList');
+      list.innerHTML = '';
+      files.forEach(file => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <a href="/files/${file}" target="_blank">${file}</a>
+          <button onclick="deleteFile('${file}')">Delete</button>
+        `;
+        list.appendChild(li);
+      });
+    }
+
+    async function deleteFile(name) {
+    await fetch('/delete-file?admin=true', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name })
+    });
+    loadFiles();
+    }
+
+
+    loadFiles();
+  </script>
+</body>
+</html>
