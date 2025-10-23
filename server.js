@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const PORT = 3000;
+const PORT = 4000;
 const UPLOAD_DIR = path.join(__dirname, 'public');
 
 // Middleware to simulate admin access (replace with real auth later)
@@ -95,3 +95,4 @@ app.post('/delete-file', isAdmin, express.json(), (req, res) => {
 app.listen(PORT, () => {
   console.log(`Admin server running at http://localhost:${PORT}/admin?admin=true`);
 });
+
